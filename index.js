@@ -103,6 +103,26 @@ app.put('/updatecategory/:id', (req, res) => {
     });
 });
 
+// muestra todos los productos
+app.get('/products', (req, res) => {
+    let sql = 'SELECT * FROM Products';
+    db.query(sql, (err, result) => {
+        if (err) throw err;
+        console.log(result);
+        res.send(result);
+    });
+});
+
+// muestra todas las categorías
+app.get('/categories', (req, res) => {
+    let sql = 'SELECT * FROM categories';
+    db.query(sql, (err, result) => {
+        if (err) throw err;
+        console.log(result);
+        res.send(result);
+    });
+});
+
 
 
 app.listen(PORT, () => console.log(`Servidor levantado en el puerto ${PORT}`));
