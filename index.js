@@ -47,6 +47,33 @@ app.get('/createtableclasif', (req, res) => {
     });
 });
 
+// añadir productos
+app.post('/addproducts', (req, res) => {
+    let product = {
+        name: req.body.name,
+        price: req.body.price
+    };
+    let sql = 'INSERT INTO Products SET ?';
+    db.query(sql, product, (err, result) => {
+        if (err) throw err;
+        console.log(result);
+        res.send('Product added...');
+    });
+});
+
+// añadir categorias
+app.post('/addcategories', (req, res) => {
+    let category = {
+        name: req.body.name,
+    };
+    let sql = 'INSERT INTO Categories SET ?';
+    db.query(sql, category, (err, result) => {
+        if (err) throw err;
+        console.log(result);
+        res.send('Category added...');
+    });
+});
+
 
 
 app.listen(PORT, () => console.log(`Servidor levantado en el puerto ${PORT}`));
