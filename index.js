@@ -123,6 +123,30 @@ app.get('/categories', (req, res) => {
     });
 });
 
+//añadir relacion entre productos y categorías
+app.post('/classrel', (req, res) => {
+    let productId = req.body.product_id;
+    let categoryId = req.body.category_id;
+    let sql = 'INSERT INTO Classification (product_id, category_id) VALUES (?, ?)';
+    db.query(sql, [productId, categoryId], (err, result) => {
+        if (err) throw err;
+        console.log(result);
+        res.send('New classification added...');
+    });
+});
+
+// muestra productos y categorias
+app.get('/prodcat', (req, res) => {
+    let sql = 'SELECT p.name AS product_name, c.name AS category_name FROM Classification cl JOIN Products p ON cl.product_id = p.id JOIN Categories c ON cl.category_id = c.id';
+    db.query(sql, (err, result) => {
+        if (err) {
+            throw err;
+        }
+        console.log(result);
+        res.send(result);
+    });
+});
+
 
 
 app.listen(PORT, () => console.log(`Servidor levantado en el puerto ${PORT}`));
