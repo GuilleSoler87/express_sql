@@ -174,5 +174,34 @@ app.get('/prods/descend', (req, res) => {
     });
 });
 
+// muestra categoría por id
+app.get('/categories/:id', (req, res) => {
+    let CategoryId = req.params.id;
+    let sql = 'SELECT * FROM Categories WHERE id = ?';
+    db.query(sql, CategoryId, (err, result) => {
+        if (err) throw err;
+        if (result.length > 0) {
+            res.send(result[0]);
+        } else {
+            res.status(404).send('Category not found');
+        }
+    });
+});
+
+//muestra producto por nombre
+app.get('/products/search/:name', (req, res) => {
+    let productName = req.params.name;
+    let sql = 'SELECT * FROM Products WHERE name LIKE ?';
+    let query = '%' + productName + '%';
+    db.query(sql, query, (err, result) => {
+        if (err) throw err;
+        if (result.length > 0) {
+            res.send(result);
+        } else {
+            res.status(404).send('Product not found');
+        }
+    });
+});
+
 
 app.listen(PORT, () => console.log(`Servidor levantado en el puerto ${PORT}`));
