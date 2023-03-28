@@ -203,5 +203,26 @@ app.get('/products/search/:name', (req, res) => {
     });
 });
 
+//borra un producto por su ID
+app.delete('/products/:id', (req, res) => {
+    let productId = req.params.id;
+
+    // Elimina los registros asociados en la tabla "classification"
+    let sql1 = 'DELETE FROM classification WHERE product_id = ?';
+    db.query(sql1, productId, (err, result) => {
+        if (err) throw err;
+
+        // Elimina el producto correspondiente en la tabla "products"
+        let sql2 = 'DELETE FROM products WHERE id = ?';
+        db.query(sql2, productId, (err, result) => {
+            if (err) throw err;
+            if (result.affectedRows > 0) {
+                res.send(`Product with ID ${productId} deleted.`);
+            } else {
+                res.status(404).send('Product not found');
+            }
+        });
+    });
+});
 
 app.listen(PORT, () => console.log(`Servidor levantado en el puerto ${PORT}`));
