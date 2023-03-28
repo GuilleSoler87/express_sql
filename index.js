@@ -74,6 +74,35 @@ app.post('/addcategories', (req, res) => {
     });
 });
 
+// actualizar un producto
+app.put('/updateproduct/:id', (req, res) => {
+    let productId = req.params.id;
+    let updatedProduct = {
+        name: req.body.name,
+        price: req.body.price
+    };
+    let sql = 'UPDATE Products SET ? WHERE id = ?';
+    db.query(sql, [updatedProduct, productId], (err, result) => {
+        if (err) throw err;
+        console.log(result);
+        res.send('Product updated...');
+    });
+});
+
+// actualizar una categoría
+app.put('/updatecategory/:id', (req, res) => {
+    let categoryId = req.params.id;
+    let updatedCategory = {
+        name: req.body.name,
+    };
+    let sql = 'UPDATE Categories SET ? WHERE id = ?';
+    db.query(sql, [updatedCategory, categoryId], (err, result) => {
+        if (err) throw err;
+        console.log(result);
+        res.send('Category updated...');
+    });
+});
+
 
 
 app.listen(PORT, () => console.log(`Servidor levantado en el puerto ${PORT}`));
