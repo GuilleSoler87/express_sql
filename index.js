@@ -147,6 +147,32 @@ app.get('/prodcat', (req, res) => {
     });
 });
 
+// muestra producto por id
+app.get('/products/:id', (req, res) => {
+    let productId = req.params.id;
+    let sql = 'SELECT * FROM Products WHERE id = ?';
+    db.query(sql, productId, (err, result) => {
+        if (err) throw err;
+        if (result.length > 0) {
+            res.send(result[0]);
+        } else {
+            res.status(404).send('Product not found');
+        }
+    });
+});
+
+// muestra productos por precio descendente 
+app.get('/prods/descend', (req, res) => {
+    let sql = 'SELECT * FROM Products ORDER BY price DESC';
+    db.query(sql, (err, result) => {
+        if (err) throw err;
+        if (result.length > 0) {
+            res.send(result);
+        } else {
+            res.status(404).send('Products not found');
+        }
+    });
+});
 
 
 app.listen(PORT, () => console.log(`Servidor levantado en el puerto ${PORT}`));
